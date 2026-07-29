@@ -1,4 +1,3 @@
-// components/shared/header.tsx
 import Link from "next/link"
 import { Menu, Search, ShoppingBag } from "lucide-react"
 import { Show, SignInButton, UserButton } from "@clerk/nextjs"
@@ -19,13 +18,8 @@ import {
 } from "@/components/ui/sheet"
 import { Logo } from "@/components/shared/logo"
 import { ThemeToggle } from "@/components/shared/theme-toggle"
+import { DEPARTMENTS } from "@/lib/constants/departments"
 
-const DEPARTMENTS = [
-  { label: "Clothes", href: "/shop/clothes" },
-  { label: "Shoes", href: "/shop/shoes" },
-  { label: "Jewelry", href: "/shop/jewelry" },
-  { label: "Accessories", href: "/shop/accessories" },
-]
 
 export function Header() {
   return (

@@ -1,7 +1,13 @@
-import { sanityFetch } from '@/sanity/lib/live'
-import { ALL_CATEGORIES_QUERY } from '@/sanity/lib/queries'
+import { Hero } from "@/components/shared/hero"
+import { DepartmentStrip } from "@/components/shared/department-strip"
+import { FeaturedProducts } from "@/components/shared/featured-products"
 
-export default async function Page() {
-  const { data: categories } = await sanityFetch({ query: ALL_CATEGORIES_QUERY })
-  return <pre>{JSON.stringify(categories, null, 2)}</pre>
+export default function Page() {
+  return (
+    <>
+      <Hero />
+      <DepartmentStrip />
+      <FeaturedProducts />
+    </>
+  )
 }
