@@ -1,5 +1,5 @@
-// app/(app)/layout.tsx
 import { Header } from '@/components/shared/header'
+import { Toaster } from '@/components/ui/sonner'
 import { SanityLive } from '@/sanity/lib/live'
 
 function AppLayout({ children }: { children: React.ReactNode }) {
@@ -7,6 +7,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
     <>
       <Header />
       <main>{children}</main>
+      <Toaster />
       <SanityLive />
     </>
   )

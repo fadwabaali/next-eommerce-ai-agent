@@ -19,6 +19,7 @@ import {
 import { Logo } from "@/components/shared/logo"
 import { ThemeToggle } from "@/components/shared/theme-toggle"
 import { DEPARTMENTS } from "@/lib/constants/departments"
+import { CartSheet } from "../cart/cart-sheet"
 
 
 export function Header() {
@@ -68,18 +69,14 @@ export function Header() {
         </NavigationMenu>
 
         <div className="ml-auto flex items-center gap-1">
-          <Button variant="ghost" size="icon" aria-label="Search">
-            <Search className="size-5" />
+          <Button variant="ghost" size="icon" aria-label="Search" asChild>
+            <Link href="/search">
+              <Search className="size-5" />
+            </Link>
           </Button>
-
           <ThemeToggle />
 
-          <Button variant="ghost" size="icon" className="relative" aria-label="Cart">
-            <ShoppingBag className="size-5" />
-            <Badge className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px]">
-              0
-            </Badge>
-          </Button>
+          <CartSheet />
 
           <Show when="signed-in">
             <UserButton />
