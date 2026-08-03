@@ -15,6 +15,58 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type ProductReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "product";
+};
+
+export type CustomerReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "customer";
+};
+
+export type Order = {
+  _id: string;
+  _type: "order";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderNumber: string;
+  items?: Array<{
+    product?: ProductReference;
+    variantSku?: string;
+    size?: string;
+    color?: string;
+    quantity: number;
+    priceAtPurchase: number;
+    _key: string;
+  }>;
+  total?: number;
+  status?: "paid" | "shipped" | "delivered" | "cancelled";
+  customer?: CustomerReference;
+  clerkUserId?: string;
+  email?: string;
+  stripeSessionId?: string;
+  stripePaymentId?: string;
+  createdAt?: string;
+};
+
+export type Customer = {
+  _id: string;
+  _type: "customer";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  email: string;
+  clerkUserId: string;
+  stripeCustomerId?: string;
+  createdAt?: string;
+};
+
 export type CategoryReference = {
   _ref: string;
   _type: "reference";
@@ -200,6 +252,10 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | ProductReference
+  | CustomerReference
+  | Order
+  | Customer
   | CategoryReference
   | SanityImageAssetReference
   | Product

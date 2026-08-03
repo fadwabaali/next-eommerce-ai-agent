@@ -1,10 +1,11 @@
-// sanity/schemaTypes/product.ts
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import { PackageIcon } from "@sanity/icons/Package";
 
 export const product = defineType({
   name: 'product',
   title: 'Product',
   type: 'document',
+  icon: PackageIcon,
   fields: [
     defineField({
       name: 'name',
