@@ -372,7 +372,7 @@ export type PRODUCT_BY_SLUG_QUERY_RESULT = {
 
 // Source: sanity/lib/queries.ts
 // Variable: PRODUCTS_BY_DEPARTMENT_NEWEST_QUERY
-// Query: *[_type == "product" && category->department == $department && ($categorySlug == "" || category->slug.current == $categorySlug)] | order(_createdAt desc) [$start...$end] {  _id,  name,  slug,  price,  compareAtPrice,  images,  "category": category->{title, slug}}
+// Query: *[  _type == "product"  && category->department == $department  && ($categorySlug == "" || category->slug.current == $categorySlug)  && (count($sizes) == 0 || count(variants[size in $sizes]) > 0)  && (count($colors) == 0 || count(variants[color in $colors]) > 0)] | order(_createdAt desc) [$start...$end] {  _id,  name,  slug,  price,  compareAtPrice,  images,  "category": category->{title, slug}}
 export type PRODUCTS_BY_DEPARTMENT_NEWEST_QUERY_RESULT = Array<{
   _id: string;
   name: string;
@@ -395,7 +395,7 @@ export type PRODUCTS_BY_DEPARTMENT_NEWEST_QUERY_RESULT = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: PRODUCTS_BY_DEPARTMENT_PRICE_ASC_QUERY
-// Query: *[_type == "product" && category->department == $department && ($categorySlug == "" || category->slug.current == $categorySlug)] | order(price asc) [$start...$end] {  _id,  name,  slug,  price,  compareAtPrice,  images,  "category": category->{title, slug}}
+// Query: *[  _type == "product"  && category->department == $department  && ($categorySlug == "" || category->slug.current == $categorySlug)  && (count($sizes) == 0 || count(variants[size in $sizes]) > 0)  && (count($colors) == 0 || count(variants[color in $colors]) > 0)] | order(price asc) [$start...$end] {  _id,  name,  slug,  price,  compareAtPrice,  images,  "category": category->{title, slug}}
 export type PRODUCTS_BY_DEPARTMENT_PRICE_ASC_QUERY_RESULT = Array<{
   _id: string;
   name: string;
@@ -418,7 +418,7 @@ export type PRODUCTS_BY_DEPARTMENT_PRICE_ASC_QUERY_RESULT = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: PRODUCTS_BY_DEPARTMENT_PRICE_DESC_QUERY
-// Query: *[_type == "product" && category->department == $department && ($categorySlug == "" || category->slug.current == $categorySlug)] | order(price desc) [$start...$end] {  _id,  name,  slug,  price,  compareAtPrice,  images,  "category": category->{title, slug}}
+// Query: *[  _type == "product"  && category->department == $department  && ($categorySlug == "" || category->slug.current == $categorySlug)  && (count($sizes) == 0 || count(variants[size in $sizes]) > 0)  && (count($colors) == 0 || count(variants[color in $colors]) > 0)] | order(price desc) [$start...$end] {  _id,  name,  slug,  price,  compareAtPrice,  images,  "category": category->{title, slug}}
 export type PRODUCTS_BY_DEPARTMENT_PRICE_DESC_QUERY_RESULT = Array<{
   _id: string;
   name: string;
@@ -441,8 +441,16 @@ export type PRODUCTS_BY_DEPARTMENT_PRICE_DESC_QUERY_RESULT = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: PRODUCTS_BY_DEPARTMENT_COUNT_QUERY
-// Query: count(*[_type == "product" && category->department == $department && ($categorySlug == "" || category->slug.current == $categorySlug)])
+// Query: count(*[  _type == "product"  && category->department == $department  && ($categorySlug == "" || category->slug.current == $categorySlug)  && (count($sizes) == 0 || count(variants[size in $sizes]) > 0)  && (count($colors) == 0 || count(variants[color in $colors]) > 0)])
 export type PRODUCTS_BY_DEPARTMENT_COUNT_QUERY_RESULT = number;
+
+// Source: sanity/lib/queries.ts
+// Variable: DEPARTMENT_VARIANT_OPTIONS_QUERY
+// Query: *[_type == "product" && category->department == $department]{    "sizes": variants[].size,    "colors": variants[].color  }
+export type DEPARTMENT_VARIANT_OPTIONS_QUERY_RESULT = Array<{
+  sizes: Array<string | null>;
+  colors: Array<string | null>;
+}>;
 
 // Source: sanity/lib/queries.ts
 // Variable: RELATED_PRODUCTS_QUERY
@@ -498,10 +506,11 @@ declare module "@sanity/client" {
     '\n  *[_type == "product" && category->department == $department] | order(name asc) {\n    _id,\n    name,\n    slug,\n    price,\n    compareAtPrice,\n    images,\n    featured,\n    "category": category->{title, slug}\n  }\n': PRODUCTS_BY_DEPARTMENT_QUERY_RESULT;
     '\n  *[_type == "product" && featured == true] | order(_createdAt desc) [0...8] {\n    _id,\n    name,\n    slug,\n    price,\n    compareAtPrice,\n    images,\n    "category": category->{title, slug}\n  }\n': FEATURED_PRODUCTS_QUERY_RESULT;
     '\n  *[_type == "product" && slug.current == $slug][0] {\n    _id,\n    name,\n    slug,\n    description,\n    price,\n    compareAtPrice,\n    material,\n    images,\n    variants,\n    "category": category->{title, slug, department}\n  }\n': PRODUCT_BY_SLUG_QUERY_RESULT;
-    '\n  *[_type == "product" && category->department == $department && ($categorySlug == "" || category->slug.current == $categorySlug)] | order(_createdAt desc) [$start...$end] {\n  _id,\n  name,\n  slug,\n  price,\n  compareAtPrice,\n  images,\n  "category": category->{title, slug}\n}\n': PRODUCTS_BY_DEPARTMENT_NEWEST_QUERY_RESULT;
-    '\n  *[_type == "product" && category->department == $department && ($categorySlug == "" || category->slug.current == $categorySlug)] | order(price asc) [$start...$end] {\n  _id,\n  name,\n  slug,\n  price,\n  compareAtPrice,\n  images,\n  "category": category->{title, slug}\n}\n': PRODUCTS_BY_DEPARTMENT_PRICE_ASC_QUERY_RESULT;
-    '\n  *[_type == "product" && category->department == $department && ($categorySlug == "" || category->slug.current == $categorySlug)] | order(price desc) [$start...$end] {\n  _id,\n  name,\n  slug,\n  price,\n  compareAtPrice,\n  images,\n  "category": category->{title, slug}\n}\n': PRODUCTS_BY_DEPARTMENT_PRICE_DESC_QUERY_RESULT;
-    '\n  count(*[_type == "product" && category->department == $department && ($categorySlug == "" || category->slug.current == $categorySlug)])\n': PRODUCTS_BY_DEPARTMENT_COUNT_QUERY_RESULT;
+    '\n  *[\n  _type == "product"\n  && category->department == $department\n  && ($categorySlug == "" || category->slug.current == $categorySlug)\n  && (count($sizes) == 0 || count(variants[size in $sizes]) > 0)\n  && (count($colors) == 0 || count(variants[color in $colors]) > 0)\n] | order(_createdAt desc) [$start...$end] {\n  _id,\n  name,\n  slug,\n  price,\n  compareAtPrice,\n  images,\n  "category": category->{title, slug}\n}\n': PRODUCTS_BY_DEPARTMENT_NEWEST_QUERY_RESULT;
+    '\n  *[\n  _type == "product"\n  && category->department == $department\n  && ($categorySlug == "" || category->slug.current == $categorySlug)\n  && (count($sizes) == 0 || count(variants[size in $sizes]) > 0)\n  && (count($colors) == 0 || count(variants[color in $colors]) > 0)\n] | order(price asc) [$start...$end] {\n  _id,\n  name,\n  slug,\n  price,\n  compareAtPrice,\n  images,\n  "category": category->{title, slug}\n}\n': PRODUCTS_BY_DEPARTMENT_PRICE_ASC_QUERY_RESULT;
+    '\n  *[\n  _type == "product"\n  && category->department == $department\n  && ($categorySlug == "" || category->slug.current == $categorySlug)\n  && (count($sizes) == 0 || count(variants[size in $sizes]) > 0)\n  && (count($colors) == 0 || count(variants[color in $colors]) > 0)\n] | order(price desc) [$start...$end] {\n  _id,\n  name,\n  slug,\n  price,\n  compareAtPrice,\n  images,\n  "category": category->{title, slug}\n}\n': PRODUCTS_BY_DEPARTMENT_PRICE_DESC_QUERY_RESULT;
+    '\n  count(*[\n  _type == "product"\n  && category->department == $department\n  && ($categorySlug == "" || category->slug.current == $categorySlug)\n  && (count($sizes) == 0 || count(variants[size in $sizes]) > 0)\n  && (count($colors) == 0 || count(variants[color in $colors]) > 0)\n])\n': PRODUCTS_BY_DEPARTMENT_COUNT_QUERY_RESULT;
+    '\n  *[_type == "product" && category->department == $department]{\n    "sizes": variants[].size,\n    "colors": variants[].color\n  }\n': DEPARTMENT_VARIANT_OPTIONS_QUERY_RESULT;
     '\n  *[_type == "product" && category->department == $department && _id != $excludeId] | order(_createdAt desc) [0...4] {\n  _id,\n  name,\n  slug,\n  price,\n  compareAtPrice,\n  images,\n  "category": category->{title, slug}\n}\n': RELATED_PRODUCTS_QUERY_RESULT;
     '\n  *[_type == "product" && (name match $term + "*" || description match $term + "*")] | order(name asc) {\n  _id,\n  name,\n  slug,\n  price,\n  compareAtPrice,\n  images,\n  "category": category->{title, slug}\n}\n': SEARCH_PRODUCTS_QUERY_RESULT;
   }

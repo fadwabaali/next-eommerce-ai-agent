@@ -54,8 +54,8 @@ export function Hero() {
                   <p className="max-w-md text-sm text-white/80 md:text-base">
                     {department.subcopy}
                   </p>
-                  <Button asChild size="lg" className="mt-2 w-fit">
-                    <Link href={department.href}>Shop {department.label}</Link>
+                  <Button render={<Link href={department.href} />} size="lg" className="mt-2 w-fit" nativeButton={false}>
+                    Shop {department.label}
                   </Button>
                 </div>
               </div>

@@ -61,20 +61,35 @@ const PRODUCT_CARD_PROJECTION = `{
   "category": category->{title, slug}
 }`
 
+const DEPARTMENT_FILTER = `
+  _type == "product"
+  && category->department == $department
+  && ($categorySlug == "" || category->slug.current == $categorySlug)
+  && (count($sizes) == 0 || count(variants[size in $sizes]) > 0)
+  && (count($colors) == 0 || count(variants[color in $colors]) > 0)
+`
+
 export const PRODUCTS_BY_DEPARTMENT_NEWEST_QUERY = defineQuery(`
-  *[_type == "product" && category->department == $department && ($categorySlug == "" || category->slug.current == $categorySlug)] | order(_createdAt desc) [$start...$end] ${PRODUCT_CARD_PROJECTION}
+  *[${DEPARTMENT_FILTER}] | order(_createdAt desc) [$start...$end] ${PRODUCT_CARD_PROJECTION}
 `)
 
 export const PRODUCTS_BY_DEPARTMENT_PRICE_ASC_QUERY = defineQuery(`
-  *[_type == "product" && category->department == $department && ($categorySlug == "" || category->slug.current == $categorySlug)] | order(price asc) [$start...$end] ${PRODUCT_CARD_PROJECTION}
+  *[${DEPARTMENT_FILTER}] | order(price asc) [$start...$end] ${PRODUCT_CARD_PROJECTION}
 `)
 
 export const PRODUCTS_BY_DEPARTMENT_PRICE_DESC_QUERY = defineQuery(`
-  *[_type == "product" && category->department == $department && ($categorySlug == "" || category->slug.current == $categorySlug)] | order(price desc) [$start...$end] ${PRODUCT_CARD_PROJECTION}
+  *[${DEPARTMENT_FILTER}] | order(price desc) [$start...$end] ${PRODUCT_CARD_PROJECTION}
 `)
 
 export const PRODUCTS_BY_DEPARTMENT_COUNT_QUERY = defineQuery(`
-  count(*[_type == "product" && category->department == $department && ($categorySlug == "" || category->slug.current == $categorySlug)])
+  count(*[${DEPARTMENT_FILTER}])
+`)
+
+export const DEPARTMENT_VARIANT_OPTIONS_QUERY = defineQuery(`
+  *[_type == "product" && category->department == $department]{
+    "sizes": variants[].size,
+    "colors": variants[].color
+  }
 `)
 
 export const RELATED_PRODUCTS_QUERY = defineQuery(`

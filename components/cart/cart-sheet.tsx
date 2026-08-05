@@ -27,15 +27,13 @@ export function CartSheet() {
 
   return (
     <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative" aria-label="Cart">
-          <ShoppingBag className="size-5" />
-          {count > 0 && (
-            <Badge className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px]">
-              {count}
-            </Badge>
-          )}
-        </Button>
+      <SheetTrigger render={<Button variant="ghost" size="icon" className="relative" aria-label="Cart" />}>
+        <ShoppingBag className="size-5" />
+        {count > 0 && (
+          <Badge className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px]">
+            {count}
+          </Badge>
+        )}
       </SheetTrigger>
       <SheetContent side="right" className="flex w-full flex-col sm:max-w-md">
         <SheetHeader>
@@ -109,8 +107,8 @@ export function CartSheet() {
                 <span>Subtotal</span>
                 <span>{formatPrice(subtotal)}</span>
               </div>
-              <Button asChild size="lg" className="w-full">
-                <Link href="/checkout">Checkout</Link>
+              <Button render={<Link href="/checkout" />} size="lg" className="w-full" nativeButton={false}>
+                Checkout
               </Button>
             </SheetFooter>
           </>

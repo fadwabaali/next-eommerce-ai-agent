@@ -1,13 +1,9 @@
+// components/product/sort-select.tsx — updated to use the shared helper (previously didn't reset page)
 "use client"
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { buildQueryString } from "@/lib/utils/query-string"
 
 const OPTIONS = [
   { value: "newest", label: "Newest" },
@@ -21,9 +17,7 @@ export function SortSelect({ value }: { value: string }) {
   const searchParams = useSearchParams()
 
   const handleChange = (sort: string) => {
-    const params = new URLSearchParams(searchParams.toString())
-    params.set("sort", sort)
-    router.push(`${pathname}?${params.toString()}`)
+    router.push(`${pathname}${buildQueryString(searchParams, { sort: sort === "newest" ? null : sort })}`)
   }
 
   return (

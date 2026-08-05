@@ -17,7 +17,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Logo } from "@/components/shared/logo"
-import { ThemeToggle } from "@/components/shared/theme-toggle"
+import { ThemeToggle} from "@/components/shared/theme-toggle"
+import { SearchCommand } from "@/components/shared/search-command"
 import { DEPARTMENTS } from "@/lib/constants/departments"
 import { CartSheet } from "../cart/cart-sheet"
 
@@ -27,10 +28,8 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4">
         <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden" aria-label="Open menu">
-              <Menu className="size-5" />
-            </Button>
+          <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden" aria-label="Open menu" />}>
+            <Menu className="size-5" />
           </SheetTrigger>
           <SheetContent side="left" className="w-72">
             <SheetHeader>
@@ -58,10 +57,8 @@ export function Header() {
           <NavigationMenuList>
             {DEPARTMENTS.map((department) => (
               <NavigationMenuItem key={department.href}>
-                <NavigationMenuLink asChild>
-                  <Link href={department.href} className="px-3 py-2 text-sm font-medium">
-                    {department.label}
-                  </Link>
+                <NavigationMenuLink render={<Link href={department.href} className="px-3 py-2 text-sm font-medium" />}>
+                  {department.label}
                 </NavigationMenuLink>
               </NavigationMenuItem>
             ))}
@@ -69,11 +66,13 @@ export function Header() {
         </NavigationMenu>
 
         <div className="ml-auto flex items-center gap-1">
-          <Button variant="ghost" size="icon" aria-label="Search" asChild>
+          {/* <Button variant="ghost" size="icon" aria-label="Search" asChild>
             <Link href="/search">
               <Search className="size-5" />
             </Link>
-          </Button>
+          </Button> */}
+          <SearchCommand />
+
           <ThemeToggle />
 
           <CartSheet />
