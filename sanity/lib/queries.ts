@@ -99,3 +99,35 @@ export const RELATED_PRODUCTS_QUERY = defineQuery(`
 export const SEARCH_PRODUCTS_QUERY = defineQuery(`
   *[_type == "product" && (name match $term + "*" || description match $term + "*")] | order(name asc) ${PRODUCT_CARD_PROJECTION}
 `)
+
+export const MY_ORDERS_QUERY = defineQuery(`
+  *[_type == "order" && clerkUserId == $userId] | order(createdAt desc) {
+    _id,
+    orderNumber,
+    status,
+    total,
+    createdAt,
+    "itemCount": count(items),
+    "thumbnail": items[0].product->images[0]
+  }
+`)
+
+export const ORDER_BY_NUMBER_QUERY = defineQuery(`
+  *[_type == "order" && orderNumber == $orderNumber && clerkUserId == $userId][0]{
+    _id,
+    orderNumber,
+    status,
+    total,
+    email,
+    createdAt,
+    items[]{
+      _key,
+      "product": product->{name, slug, images},
+      variantSku,
+      size,
+      color,
+      quantity,
+      priceAtPurchase
+    }
+  }
+`)

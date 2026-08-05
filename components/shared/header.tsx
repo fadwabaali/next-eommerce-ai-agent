@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Menu, Search, ShoppingBag } from "lucide-react"
+import { Menu, Package, Search, ShoppingBag } from "lucide-react"
 import { Show, SignInButton, UserButton } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -78,7 +78,11 @@ export function Header() {
           <CartSheet />
 
           <Show when="signed-in">
-            <UserButton />
+            <UserButton>
+              <UserButton.MenuItems>
+                <UserButton.Link label="Order History" labelIcon={<Package className="size-4" />} href="/orders" />
+              </UserButton.MenuItems>
+            </UserButton>
           </Show>
           <Show when="signed-out">
             <SignInButton mode="modal">
