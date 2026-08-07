@@ -131,3 +131,8 @@ export const ORDER_BY_NUMBER_QUERY = defineQuery(`
     }
   }
 `)
+
+export const RECOMMEND_PRODUCTS_QUERY = defineQuery(`
+  *[_type == "product" && ($department == "" || category->department == $department)]
+  | order(featured desc, _createdAt desc) [0...6] ${PRODUCT_CARD_PROJECTION}
+`)

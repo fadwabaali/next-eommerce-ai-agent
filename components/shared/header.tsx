@@ -1,8 +1,6 @@
 import Link from "next/link"
-import { Menu, Package, Search, ShoppingBag } from "lucide-react"
-import { Show, SignInButton, UserButton } from "@clerk/nextjs"
+import { Menu} from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -19,6 +17,7 @@ import {
 import { Logo } from "@/components/shared/logo"
 import { ThemeToggle} from "@/components/shared/theme-toggle"
 import { SearchCommand } from "@/components/shared/search-command"
+import { AccountMenu } from "@/components/shared/account-menu"
 import { DEPARTMENTS } from "@/lib/constants/departments"
 import { CartSheet } from "../cart/cart-sheet"
 
@@ -66,31 +65,13 @@ export function Header() {
         </NavigationMenu>
 
         <div className="ml-auto flex items-center gap-1">
-          {/* <Button variant="ghost" size="icon" aria-label="Search" asChild>
-            <Link href="/search">
-              <Search className="size-5" />
-            </Link>
-          </Button> */}
           <SearchCommand />
 
           <ThemeToggle />
 
           <CartSheet />
 
-          <Show when="signed-in">
-            <UserButton>
-              <UserButton.MenuItems>
-                <UserButton.Link label="Order History" labelIcon={<Package className="size-4" />} href="/orders" />
-              </UserButton.MenuItems>
-            </UserButton>
-          </Show>
-          <Show when="signed-out">
-            <SignInButton mode="modal">
-              <Button variant="outline" size="sm">
-                Sign in
-              </Button>
-            </SignInButton>
-          </Show>
+          <AccountMenu />
         </div>
       </div>
     </header>

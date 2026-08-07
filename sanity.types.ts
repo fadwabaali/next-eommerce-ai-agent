@@ -498,6 +498,81 @@ export type SEARCH_PRODUCTS_QUERY_RESULT = Array<{
   };
 }>;
 
+// Source: sanity/lib/queries.ts
+// Variable: MY_ORDERS_QUERY
+// Query: *[_type == "order" && clerkUserId == $userId] | order(createdAt desc) {    _id,    orderNumber,    status,    total,    createdAt,    "itemCount": count(items),    "thumbnail": items[0].product->images[0]  }
+export type MY_ORDERS_QUERY_RESULT = Array<{
+  _id: string;
+  orderNumber: string;
+  status: "cancelled" | "delivered" | "paid" | "shipped" | null;
+  total: number | null;
+  createdAt: string | null;
+  itemCount: number | null;
+  thumbnail: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    _key: string;
+  } | null;
+}>;
+
+// Source: sanity/lib/queries.ts
+// Variable: ORDER_BY_NUMBER_QUERY
+// Query: *[_type == "order" && orderNumber == $orderNumber && clerkUserId == $userId][0]{    _id,    orderNumber,    status,    total,    email,    createdAt,    items[]{      _key,      "product": product->{name, slug, images},      variantSku,      size,      color,      quantity,      priceAtPurchase    }  }
+export type ORDER_BY_NUMBER_QUERY_RESULT = {
+  _id: string;
+  orderNumber: string;
+  status: "cancelled" | "delivered" | "paid" | "shipped" | null;
+  total: number | null;
+  email: string | null;
+  createdAt: string | null;
+  items: Array<{
+    _key: string;
+    product: {
+      name: string;
+      slug: Slug;
+      images: Array<{
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        _type: "image";
+        _key: string;
+      }>;
+    } | null;
+    variantSku: string | null;
+    size: string | null;
+    color: string | null;
+    quantity: number;
+    priceAtPurchase: number;
+  }> | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: RECOMMEND_PRODUCTS_QUERY
+// Query: *[_type == "product" && ($department == "" || category->department == $department)]  | order(featured desc, _createdAt desc) [0...6] {  _id,  name,  slug,  price,  compareAtPrice,  images,  "category": category->{title, slug}}
+export type RECOMMEND_PRODUCTS_QUERY_RESULT = Array<{
+  _id: string;
+  name: string;
+  slug: Slug;
+  price: number;
+  compareAtPrice: number | null;
+  images: Array<{
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    _key: string;
+  }>;
+  category: {
+    title: string;
+    slug: Slug;
+  };
+}>;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
@@ -513,5 +588,8 @@ declare module "@sanity/client" {
     '\n  *[_type == "product" && category->department == $department]{\n    "sizes": variants[].size,\n    "colors": variants[].color\n  }\n': DEPARTMENT_VARIANT_OPTIONS_QUERY_RESULT;
     '\n  *[_type == "product" && category->department == $department && _id != $excludeId] | order(_createdAt desc) [0...4] {\n  _id,\n  name,\n  slug,\n  price,\n  compareAtPrice,\n  images,\n  "category": category->{title, slug}\n}\n': RELATED_PRODUCTS_QUERY_RESULT;
     '\n  *[_type == "product" && (name match $term + "*" || description match $term + "*")] | order(name asc) {\n  _id,\n  name,\n  slug,\n  price,\n  compareAtPrice,\n  images,\n  "category": category->{title, slug}\n}\n': SEARCH_PRODUCTS_QUERY_RESULT;
+    '\n  *[_type == "order" && clerkUserId == $userId] | order(createdAt desc) {\n    _id,\n    orderNumber,\n    status,\n    total,\n    createdAt,\n    "itemCount": count(items),\n    "thumbnail": items[0].product->images[0]\n  }\n': MY_ORDERS_QUERY_RESULT;
+    '\n  *[_type == "order" && orderNumber == $orderNumber && clerkUserId == $userId][0]{\n    _id,\n    orderNumber,\n    status,\n    total,\n    email,\n    createdAt,\n    items[]{\n      _key,\n      "product": product->{name, slug, images},\n      variantSku,\n      size,\n      color,\n      quantity,\n      priceAtPurchase\n    }\n  }\n': ORDER_BY_NUMBER_QUERY_RESULT;
+    '\n  *[_type == "product" && ($department == "" || category->department == $department)]\n  | order(featured desc, _createdAt desc) [0...6] {\n  _id,\n  name,\n  slug,\n  price,\n  compareAtPrice,\n  images,\n  "category": category->{title, slug}\n}\n': RECOMMEND_PRODUCTS_QUERY_RESULT;
   }
 }
