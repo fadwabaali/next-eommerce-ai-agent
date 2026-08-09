@@ -573,6 +573,39 @@ export type RECOMMEND_PRODUCTS_QUERY_RESULT = Array<{
   };
 }>;
 
+// Source: sanity/lib/queries.ts
+// Variable: ADMIN_ORDERS_QUERY
+// Query: *[_type == "order" && status != "cancelled" && createdAt >= $since] | order(createdAt asc) {    _id,    total,    status,    createdAt,    items[]{      quantity,      priceAtPurchase,      "product": product->{_id, name, slug}    }  }
+export type ADMIN_ORDERS_QUERY_RESULT = Array<{
+  _id: string;
+  total: number | null;
+  status: "cancelled" | "delivered" | "paid" | "shipped" | null;
+  createdAt: string | null;
+  items: Array<{
+    quantity: number;
+    priceAtPurchase: number;
+    product: {
+      _id: string;
+      name: string;
+      slug: Slug;
+    } | null;
+  }> | null;
+}>;
+
+// Source: sanity/lib/queries.ts
+// Variable: ADMIN_LOW_STOCK_QUERY
+// Query: *[_type == "product"]{    _id,    name,    "lowVariants": variants[stock <= $threshold]{size, color, stock, sku}  }[count(lowVariants) > 0]
+export type ADMIN_LOW_STOCK_QUERY_RESULT = Array<{
+  _id: string;
+  name: string;
+  lowVariants: Array<{
+    size: string | null;
+    color: string | null;
+    stock: number;
+    sku: string;
+  }>;
+}>;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
@@ -591,5 +624,7 @@ declare module "@sanity/client" {
     '\n  *[_type == "order" && clerkUserId == $userId] | order(createdAt desc) {\n    _id,\n    orderNumber,\n    status,\n    total,\n    createdAt,\n    "itemCount": count(items),\n    "thumbnail": items[0].product->images[0]\n  }\n': MY_ORDERS_QUERY_RESULT;
     '\n  *[_type == "order" && orderNumber == $orderNumber && clerkUserId == $userId][0]{\n    _id,\n    orderNumber,\n    status,\n    total,\n    email,\n    createdAt,\n    items[]{\n      _key,\n      "product": product->{name, slug, images},\n      variantSku,\n      size,\n      color,\n      quantity,\n      priceAtPurchase\n    }\n  }\n': ORDER_BY_NUMBER_QUERY_RESULT;
     '\n  *[_type == "product" && ($department == "" || category->department == $department)]\n  | order(featured desc, _createdAt desc) [0...6] {\n  _id,\n  name,\n  slug,\n  price,\n  compareAtPrice,\n  images,\n  "category": category->{title, slug}\n}\n': RECOMMEND_PRODUCTS_QUERY_RESULT;
+    '\n  *[_type == "order" && status != "cancelled" && createdAt >= $since] | order(createdAt asc) {\n    _id,\n    total,\n    status,\n    createdAt,\n    items[]{\n      quantity,\n      priceAtPurchase,\n      "product": product->{_id, name, slug}\n    }\n  }\n': ADMIN_ORDERS_QUERY_RESULT;
+    '\n  *[_type == "product"]{\n    _id,\n    name,\n    "lowVariants": variants[stock <= $threshold]{size, color, stock, sku}\n  }[count(lowVariants) > 0]\n': ADMIN_LOW_STOCK_QUERY_RESULT;
   }
 }

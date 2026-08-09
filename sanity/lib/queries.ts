@@ -136,3 +136,25 @@ export const RECOMMEND_PRODUCTS_QUERY = defineQuery(`
   *[_type == "product" && ($department == "" || category->department == $department)]
   | order(featured desc, _createdAt desc) [0...6] ${PRODUCT_CARD_PROJECTION}
 `)
+
+export const ADMIN_ORDERS_QUERY = defineQuery(`
+  *[_type == "order" && status != "cancelled" && createdAt >= $since] | order(createdAt asc) {
+    _id,
+    total,
+    status,
+    createdAt,
+    items[]{
+      quantity,
+      priceAtPurchase,
+      "product": product->{_id, name, slug}
+    }
+  }
+`)
+
+export const ADMIN_LOW_STOCK_QUERY = defineQuery(`
+  *[_type == "product"]{
+    _id,
+    name,
+    "lowVariants": variants[stock <= $threshold]{size, color, stock, sku}
+  }[count(lowVariants) > 0]
+`)
