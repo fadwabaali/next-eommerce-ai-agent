@@ -74,6 +74,7 @@ import {
   useState,
 } from "react";
 
+
 // ============================================================================
 // Helpers
 // ============================================================================
@@ -407,6 +408,10 @@ export const usePromptInputReferencedSources = () => {
   }
   return ctx;
 };
+
+type DropdownMenuItemOnSelect = NonNullable <
+  ComponentProps<typeof DropdownMenuItem>["onSelect"]
+>;
 
 export type PromptInputActionAddAttachmentsProps = ComponentProps<
   typeof DropdownMenuItem
