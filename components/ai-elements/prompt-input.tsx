@@ -420,13 +420,13 @@ export const PromptInputActionAddAttachments = ({
 }: PromptInputActionAddAttachmentsProps) => {
   const attachments = usePromptInputAttachments();
 
-  const handleSelect = useCallback(
-    (e: Event) => {
-      e.preventDefault();
-      attachments.openFileDialog();
-    },
-    [attachments]
-  );
+  const handleSelect = useCallback<DropdownMenuItemOnSelect>(
+  (e) => {
+    e.preventDefault();
+    attachments.openFileDialog();
+  },
+  [attachments]
+);
 
   return (
     <DropdownMenuItem {...props} onSelect={handleSelect}>
@@ -448,8 +448,8 @@ export const PromptInputActionAddScreenshot = ({
 }: PromptInputActionAddScreenshotProps) => {
   const attachments = usePromptInputAttachments();
 
-  const handleSelect = useCallback(
-    async (event: Event) => {
+  const handleSelect = useCallback<DropdownMenuItemOnSelect>(
+    async (event) => {
       onSelect?.(event);
       if (event.defaultPrevented) {
         return;
