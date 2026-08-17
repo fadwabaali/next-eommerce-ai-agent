@@ -15,7 +15,7 @@ import {
   CommandList,
 } from "@/components/ui/command"
 import { urlFor } from "@/sanity/lib/image"
-import type { SEARCH_PRODUCTS_QUERYResult } from "@/sanity.types"
+import type { PRODUCT_BY_SLUG_QUERY_RESULT } from "@/sanity.types"
 
 const formatPrice = (value: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value)
@@ -24,7 +24,7 @@ export function SearchCommand() {
   const router = useRouter()
   const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState("")
-  const [results, setResults] = React.useState<SEARCH_PRODUCTS_QUERYResult>([])
+  const [results, setResults] = React.useState<PRODUCT_BY_SLUG_QUERY_RESULT>([])
   const [loading, setLoading] = React.useState(false)
 
   React.useEffect(() => {

@@ -6,10 +6,10 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { FiltersPanel } from "@/components/product/filters-panel"
 import { buildQueryString } from "@/lib/utils/query-string"
-import type { ALL_CATEGORIES_QUERYResult } from "@/sanity.types"
+import type { ALL_CATEGORIES_QUERY_RESULT } from "@/sanity.types"
 
 export function MobileFilters(props: {
-  categories: ALL_CATEGORIES_QUERYResult
+  categories: ALL_CATEGORIES_QUERY_RESULT
   activeCategorySlug: string
   sizes: string[]
   selectedSizes: string[]

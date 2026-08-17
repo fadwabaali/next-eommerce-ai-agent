@@ -4,9 +4,9 @@ import { useState } from "react"
 import Image from "next/image"
 import { urlFor } from "@/sanity/lib/image"
 import { cn } from "@/lib/utils"
-import type { PRODUCT_BY_SLUG_QUERYResult } from "@/sanity.types"
+import type { PRODUCT_BY_SLUG_QUERY_RESULT } from "@/sanity.types"
 
-type Product = NonNullable<PRODUCT_BY_SLUG_QUERYResult>
+type Product = NonNullable<PRODUCT_BY_SLUG_QUERY_RESULT>
 
 export function ProductGallery({
   images,

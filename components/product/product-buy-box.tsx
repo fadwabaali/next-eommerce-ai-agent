@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { urlFor } from "@/sanity/lib/image"
 import { useCartStore } from "@/lib/store/cart-store"
-import type { PRODUCT_BY_SLUG_QUERYResult } from "@/sanity.types"
+import type { PRODUCT_BY_SLUG_QUERY_RESULT } from "@/sanity.types"
 
-type Product = NonNullable<PRODUCT_BY_SLUG_QUERYResult>
+type Product = NonNullable<PRODUCT_BY_SLUG_QUERY_RESULT>
 
 const formatPrice = (value: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value)

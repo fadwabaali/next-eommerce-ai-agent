@@ -3,9 +3,9 @@ import Link from "next/link"
 import { urlFor } from "@/sanity/lib/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import type { FEATURED_PRODUCTS_QUERYResult } from "@/sanity.types"
+import type { PRODUCT_BY_SLUG_QUERY_RESULT } from "@/sanity.types"
 
-type Product = FEATURED_PRODUCTS_QUERYResult[number]
+type Product = PRODUCT_BY_SLUG_QUERY_RESULT[number]
 
 const formatPrice = (value: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value)

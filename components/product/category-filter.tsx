@@ -1,14 +1,14 @@
 // components/product/category-filter.tsx
 import Link from "next/link"
 import { cn } from "@/lib/utils"
-import type { ALL_CATEGORIES_QUERYResult } from "@/sanity.types"
+import type { ALL_CATEGORIES_QUERY_RESULT } from "@/sanity.types"
 
 export function CategoryFilter({
   categories,
   activeSlug,
   buildHref,
 }: {
-  categories: ALL_CATEGORIES_QUERYResult
+  categories: ALL_CATEGORIES_QUERY_RESULT
   activeSlug: string
   buildHref: (slug: string) => string
 }) {

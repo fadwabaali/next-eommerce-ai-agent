@@ -1,9 +1,9 @@
 import { CategoryFilter } from "@/components/product/category-filter"
 import { FacetFilter } from "@/components/product/facet-filter"
-import type { ALL_CATEGORIES_QUERYResult } from "@/sanity.types"
+import type { ALL_CATEGORIES_QUERY_RESULT } from "@/sanity.types"
 
 export function FiltersPanel(props: {
-  categories: ALL_CATEGORIES_QUERYResult
+  categories: ALL_CATEGORIES_QUERY_RESULT
   activeCategorySlug: string
   buildCategoryHref: (slug: string) => string
   sizes: string[]

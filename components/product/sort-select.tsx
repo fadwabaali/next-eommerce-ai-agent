@@ -16,7 +16,8 @@ export function SortSelect({ value }: { value: string }) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  const handleChange = (sort: string) => {
+  const handleChange = (sort: string | null) => {
+    if (!sort) return
     router.push(`${pathname}${buildQueryString(searchParams, { sort: sort === "newest" ? null : sort })}`)
   }
 
